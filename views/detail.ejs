@@ -1,0 +1,198 @@
+<%- include("partials/header")%>
+<!-- detail -->
+<section id="detail">
+  <div class="container py-4">
+    <div class="row top">
+      <div class="col-md-8 p-0">
+        <div class="row">
+          <div class="mr-3">
+ 
+            <img
+              src="../<%=individual.image%>"
+              alt="..."
+              width="100%"
+              id="hinh"
+            />
+            <% if(currentUser && currentUser.isAdmin){ %>
+            <div class="d-flex" id="add">
+              <a href="/individual/<%=individual._id%>/edit">Edit</a>
+              <form action="/individual/<%=individual._id%>?_method=delete" method="post">
+                <button>Delete</button>
+              </form>
+            </div>
+            <% } %>
+          </div>
+        </div>
+        <div class="row">
+          <%if(individual.rates.length === 0){%>
+          <div class="d-none d-sm-none d-md-block">No rates yet</div>
+          <%}%>
+          <div class="mr-3 bg-white">
+          <%if(individual.rates.length !== 0){%>
+            <h4><%=individual.rates.length%> rating(s)</h4>
+            <div class="star">
+              <%for (var i =0; i<Math.floor(individual.rating);i++){%>
+              <i class="fas fa-star"></i>
+              <%}%>
+               <%if(individual.rating %1 !== 0){%>
+              <i class="fas fa-star-half-alt"></i>
+              <%}%>
+               <%for (var i = 0; i < 5 - Math.ceil(individual.rating); i++){%>
+              <i class="far fa-star"></i>
+              <%}%>
+              <span class="text-dark"><%=individual.rating.toFixed(2)%> of out 5</span>
+            </div>
+           
+            <%var count=0;
+            individual.rates.forEach(function(rate){%>
+            <!-- each rating -->
+            <hr />
+            <div class="row">
+              <div class="col-4">
+                <img src="/img/avatar.png" alt="avatar" width="20%" />
+                <div>Rate by <%=rate.author.username%> </div>
+                <div><em><%=rate.updatedAt.toDateString()%></em></div>
+                <div><%=rate.rating%> out of 5</div>
+              </div>
+              <div class="col-8">
+                <div><%=rate.text%></div>
+                <% if (currentUser && currentUser._id.equals(rate.author.id)) { %>
+                <div class="d-flex justify-content-end" id="adjustRate">
+                  <div class="editBtn" ><a href="#" data-id="<%=count%>">edit</a></div>
+                  <div><form action="/individual/<%=individual._id%>/rate/<%=rate._id%>?_method=delete" method="post"><button>delete</button></form></div>
+                </div>
+                <% } %>
+                <div class="afterCliked">
+                  <div class="parentTextarea">
+                    <form action="/individual/<%=individual._id%>/rate/<%=rate._id%>?_method=put" method="post">
+                      <div class="rating">
+                        <label>☆
+                          <input type="radio" name="rate[rating]" value="5"/>
+                        </label>
+                        <label>☆
+                          <input type="radio" name="rate[rating]" value="4" />
+                        </label>
+                        <label>☆
+                          <input type="radio" name="rate[rating]" value="3" />
+                        </label>
+                        <label>☆
+                          <input type="radio" name="rate[rating]" value="2" />
+                        </label>
+                        <label>☆
+                          <input type="radio" name="rate[rating]" value="1" />
+                        </label>
+                      </div>
+                      <textarea name="rate[text]" id="" rows="7" style="resize: none"><%=rate.text%></textarea>
+                      <button class="buttondesign">submit</button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- end of each rating -->
+            <% count++; }); %>
+            <% } %>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="my-4 my-sm-0 px-2 py-3 bg-white">
+          <div><%=individual.name%></div>
+          <hr />
+          <div><%=individual.description%></div>
+          <hr />
+          <%if(individual.rates.length === 0){%>
+          <div>No rates yet</div>
+          <%}else{%>
+          <div><%=individual.rates.length%> rating(s)</div>
+          <div class="star">
+            <%for (var i =0; i<Math.floor(individual.rating);i++){%>
+            <i class="fas fa-star"></i>
+            <%}%>
+                         <%if(individual.rating %1 !== 0){%>
+            <i class="fas fa-star-half-alt"></i>
+            <%}%>
+                         <%for (var i = 0; i < 5 - Math.ceil(individual.rating); i++){%>
+            <i class="far fa-star"></i>
+            <%}%>
+                        <span class="text-dark"><%=individual.rating.toFixed(2)%> of out 5</span>
+          </div>
+          <% } %>
+          <hr />
+          <% if(currentUser){
+            var check = 0;
+            for(var j = 0; j < individual.rates.length; j++){
+              if(individual.rates[j].author.username == currentUser.username){
+                check += 1;
+              }
+            }
+            if(check != 0){%>
+              <div id="rateBtn" class="rate text-center p-2 mb-2" style="pointer-events: none;
+                  opacity: 0.4;">Rate</div>
+              <div>You has already rated.</div>
+            <%}else{%>
+              <div id="rateBtn" class="rate text-center p-2 mb-2">Rate</div>
+            <%}
+            }else{%>
+            <div id="rateBtn" class="rate text-center p-2 mb-2">Rate</div>
+          <%}%>
+          <div id="clicked">
+          <%if(!currentUser){%>
+          <div>You have to login to rate. Click <a href="/login">here</a> to login</div>
+          <%}else{%>
+          <div class="parentTextarea">
+            <form action="/individual/<%=individual._id%>/rate" method="post">
+              <div class="rating">
+                <label>☆
+                  <input type="radio" name="rate[rating]" value="5" />
+                </label>
+                <label>☆
+                  <input type="radio" name="rate[rating]" value="4" />
+                </label>
+                <label>☆
+                  <input type="radio" name="rate[rating]" value="3" />
+                </label>
+                <label>☆
+                  <input type="radio" name="rate[rating]" value="2" />
+                </label>
+                <label>☆
+                  <input type="radio" name="rate[rating]" value="1" />
+                </label>
+              </div>
+              <textarea name="rate[text]" id="" rows="7" style="resize: none" placeholder="enter your comment"></textarea>
+              <button class="buttondesign">submit</button>
+            </form>
+          </div>
+          <%}%>
+          </div>
+      
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- end of detail -->
+
+<!-- end of detail -->
+<script>
+  var rateBtn = document.getElementById("rateBtn");
+    var clicked = document.getElementById("clicked");
+    var editBtn = document.getElementsByClassName("editBtn");
+    var afterCliked = document.getElementsByClassName("afterCliked");
+  // slide down new rating
+    rateBtn.addEventListener("click", function () {
+      clicked.style.opacity = "1";
+    });
+// slide down edit rating
+    for(var i = 0; i< editBtn.length;i++){
+      editBtn[i].addEventListener("click",function(e){
+        var count = e.target.dataset.id; 
+         afterCliked[count].style.height = "100%"; 
+      })
+    }
+
+    
+  
+</script>
+<%- include("partials/footer")%>

@@ -1,0 +1,26 @@
+<%- include("partials/header")%>
+<!-- form -->
+<div class="row">
+  <div
+    class="col-9 col-sm-6 col-md-7 col-lg-6 mx-auto text-capitalize formdesign"
+  >
+    <h4 class="text-center">create new individual</h4>
+    <form action="/individual" method="post" enctype="multipart/form-data">
+      <div class="inputdesign">
+        <label for="">name</label>
+        <input type="text" placeholder="enter name" name="name" />
+      </div>
+      <div class="inputdesign">
+        <label for="">file</label>
+        <input type="file" name="img" />
+      </div>
+      <div class="inputdesign">
+        <label for="">description</label>
+        <input type="text" placeholder="enter description" name="description" />
+      </div>
+      <button class="buttondesign">Submit</button>
+    </form>
+  </div>
+</div>
+<!-- end of form -->
+<%- include("partials/footer")%>

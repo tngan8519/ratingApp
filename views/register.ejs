@@ -1,0 +1,40 @@
+<%- include("partials/header")%>
+<!-- form -->
+<div class="row">
+  <div
+    class="col-9 col-sm-6 col-md-7 col-lg-6 mx-auto text-capitalize formdesign"
+  >
+    <h4 class="text-center">register</h4>
+    <form action="/register" method="post">
+      <div class="inputdesign">
+        <label for="">user name</label>
+        <input
+          type="text"
+          placeholder="enter your user name"
+          name="username"
+          required
+        />
+      </div>
+      <div class="inputdesign">
+        <label for="">password</label>
+        <input
+          type="password"
+          placeholder="enter your password"
+          name="password"
+          required
+        />
+      </div>
+      <div class="inputdesign">
+        <label for="">admin code</label>
+        <input
+          type="password"
+          placeholder="enter admin code"
+          name="adminCode"
+        />
+      </div>
+      <button class="buttondesign">Submit</button>
+    </form>
+  </div>
+</div>
+<!-- end of form -->
+<%- include("partials/footer")%>

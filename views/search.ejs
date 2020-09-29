@@ -1,0 +1,127 @@
+<%- include("partials/header")%>
+<!-- show searching -->
+<section id="showSearching">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="p-4 bg-white">
+          <h4>Find by name</h4>
+          <form action="/search" method="get" id="searchForm">
+            <input type="text" placeholder="type name ..." name="q" />
+          </form>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="p-4 bg-white">
+          <h4>Find by keyword</h4>
+<form action="/sort" method="get" id="selectForm">
+          <select name="sorting" >
+            <option value="">-- select --</option>
+            <option value="highestRate">Rating (highest first)</option>
+            <option value="lowestRate">Rating (lowest first)</option>
+            <option value="newest">Date (newest first)</option>
+            <option value="oldest">Date (oldest first)</option>
+            <option value="abc">Name (ascending)</option>
+            <option value="z">Name (descending)</option>
+          </select>
+</form>
+        </div>
+      </div>
+      <%individuals.forEach(function(individual){%>
+      <!-- single rating -->
+      <div class="col-10 mx-auto my-3 col-md-6 col-lg-4">
+        <div class="singleRating bg-white mt-4">
+          <div class="imgContainer">
+            <a href="/individual/<%=individual._id%>">
+              <img src="<%=individual.image%>" alt="..." width="100%" />
+            </a>
+          </div>
+          <%if(individual.rating===0){%>
+          <div class="text-center p-2">No ratings yet</div>
+          <br>
+          <%} else{ %>
+          <div class="text-center p-2">
+              <div class="star">
+                <%for (var i =0; i<Math.floor(individual.rating);i++){%>
+                <i class="fas fa-star"></i>
+                <%}%>
+                             <%if(individual.rating%1!==0){%>
+                <i class="fas fa-star-half-alt"></i>
+                <%}%>
+                             <%for (var i =0; i<5- Math.ceil(individual.rating);i++){%>
+                <i class="far fa-star"></i>
+                <%}%>
+                           
+              </div>
+              <div>
+                updated: <%=individual.rates[0].updatedAt.toDateString()%>
+              </div>
+          </div>
+          <%}%>
+          <div class="p-2">
+            
+            <div><%=individual.name%></div>
+            <div><%=individual.description%></div>
+          </div>
+        </div>
+      </div>
+      <!-- end of single rating -->
+      <%})%>
+    </div>
+  </div>
+</section>
+<!-- end of show searching -->
+<!-- list info -->
+<section id="info" class="bg-white">
+  <div class="container">
+    <div class="row text-capitalize">
+     
+      <div class="col-md-6">
+        <h4>top ratings</h4>
+        <% topRatingIndiviudals.forEach(function(individual){%>
+        <div class="d-flex align-items-center">
+          <div>
+            <img src="<%=individual.image%>" alt="..." width="100" height="90" />
+          </div>
+          <div class="ml-4">
+            <div><%=individual.name%></div>
+            <%if(individual.rating===0){%>
+            <div>No ratings yet</div>
+            <br>
+            <%} else{ %>
+        
+            <div class="star">
+              <%for (var i =0; i<Math.floor(individual.rating);i++){%>
+              <i class="fas fa-star"></i>
+              <%}%>
+                      <%if(individual.rating%1!==0){%>
+              <i class="fas fa-star-half-alt"></i>
+              <%}%>
+                      <%for (var i =0; i<5- Math.ceil(individual.rating);i++){%>
+              <i class="far fa-star"></i>
+              <%}%>         
+                      </div>
+                      <div>updated: <%=individual.rates[0].updatedAt.toDateString()%></div>
+            <%}%>
+                  </div>
+                </div>
+                <%})%>
+
+      </div>
+    </div>
+  </div>
+</section>
+<!-- end of list info -->
+<script>
+  // submit form search by enter key
+    searchForm.onkeypress = function (e) {
+      if (e.which === 13) {
+        searchForm.submit();
+      }
+    };
+  // submit form select by change 
+  selectForm.onchange = function(){
+    selectForm.submit();
+  }
+</script>
+<%- include("partials/footer")%>

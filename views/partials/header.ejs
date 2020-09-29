@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Rating</title>
+    <!-- boostrap -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css" />
+    <!-- main css -->
+    <link rel="stylesheet" href="/css/style.css" />
+    <!-- font awesome -->
+    <script src="/js/all.js"></script>
+  </head>
+
+  <body onresize="reSize()">
+    <!-- navbar -->
+    <nav id="nav">
+      <div class="container">
+        <div class="d-flex justify-content-between align-items-baseline py-2">
+          <div id="mainNav">
+            <div class="text-uppercase font-weight-bold">hype.you.up</div>
+            <div id="bigNav">
+              <ul>
+                <li><a href="/" class="text-capitalize">home</a></li>
+                <li>
+                  <a href="/individual" class="text-capitalize">search</a>
+                </li>
+
+                <% if(currentUser && currentUser.isAdmin){%>
+                <li>
+                  <a href="/individual/new" class="text-capitalize">post</a>
+                </li>
+                <li>
+                  <a href="#" class="text-capitalize">
+                    <%= currentUser.username%></a
+                  >
+                </li>
+                <li>
+                  <a href="/logout" class="text-capitalize">logout</a>
+                </li>
+                <%}else if(currentUser){%>
+                <li>
+                  <a href="#" class="text-capitalize">
+                    <%= currentUser.username%></a
+                  >
+                </li>
+                <li>
+                  <a href="/logout" class="text-capitalize">logout</a>
+                </li>
+                <%}else{%>
+                <li><a href="/login" class="text-capitalize">login</a></li>
+                <li>
+                  <a href="/register" class="text-capitalize">register</a>
+                </li>
+                <%}%>
+              </ul>
+            </div>
+          </div>
+          <div id="dropdownlist">
+            <div class="smallNav" id="navBtn">
+              <i class="fas fa-ellipsis-h"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
+    <!-- end of navbar -->
+  </body>
+</html>
